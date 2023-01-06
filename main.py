@@ -3,10 +3,10 @@
 # Importing random module for random number generation
 import random
 
-# Initialize the doors with default goat
+# Initialize a list named "doors" with three elements, each having a goat
 doors = ['goat', 'goat', 'goat']
 
-# Making it easier to see + changing text color
+# Using ANSI excape codes to make it easier to see + change text color
 print('\033[1;212m')
 
 # Randomly change one of the doors into having the car and print out the doors
@@ -16,19 +16,21 @@ print('The car is hidden behind door number', carIndex + 1)
 doors[carIndex] = 'car'
 print('The hidden items behind the doors are:', doors)
 
-# Monty Hall
+# Following the assumption: The host must always open a door that was not picked by the contestant
 if (carIndex == 1):
     montyChoice = 2
 else:
     montyChoice = 1
 
+# Following the assumption: The host must always open a door to reveal a goat and never the car.
 print('Monty opens door number', montyChoice + 1, 'which had a', doors[montyChoice])
 
-# Ask the user if they want to swap choices
+# Following the assumption: The host must always offer the chance to switch between the originally chosen door and the remaining closed door.
 print('Would you like to swap between your chosen door with the remaining closed door?')
-userChoice = input('Enter 1 for Yes, 2 for No\n')
+print('Enter 1 to change choice to door number', carIndex + 1,'\nEnter 2 to keep original choice\n')
+userChoice = input()
 
-# Decide the prize
+# Decide the prize for the user
 if (userChoice == '1'):
     if (carIndex == 0):
         print('You won a goat!')
