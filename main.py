@@ -107,6 +107,7 @@ def standardRun():
     # Following the assumption: The host must always open a door to reveal a goat and never the car.
     print('\n\033[1;33m' + monty,'opened Door', montyChoice, 'which was revealed to have', doors[montyChoice - 1] + '!\n')
 
+    # Update unknownDoors to have the new information from Monty's reveal
     unknownDoors[montyChoice - 1] = doors[montyChoice - 1]
     print('\033[1;31m{}'.format(unknownDoors), '\033[1;37m\n')
     
@@ -166,12 +167,14 @@ def experimentalRun():
         if (carIndex + 1 != userChoice):
             wins += 1
 
+    # Outputting results to the terminal for statistical analysis
     print('\n\033[1;34mWins:', wins, '\nLosses:', int(numberOfTrials) - wins, '\nWin Rate:', str(round((wins / int(numberOfTrials) * 100), 2)) + '%\n\033[1;37m')
     return
 
 # Main program that will be executed at the beginning
 def main():
     loopFlag = 1
+    # Loop until the user updates the flag
     while (int(loopFlag) == 1):
         # Give option select a kind of run to do 
         chooseRun()
@@ -181,6 +184,7 @@ def main():
         
         # Resetting font color     
         print('\033[1;0m')
+    # End of program
     print('Have a good day!')
     return
     
