@@ -8,6 +8,16 @@ monty = 'Monty'
 car = 'a car'
 goat = 'a goat'
 
+# ANSI Escape Codes in Python - source: https://replit.com/talk/learn/ANSI-Escape-Codes-in-Python/22803
+#  black = "\u001b[30m"
+#  red = "\u001b[31m"
+#  green = "\u001b[32m"
+#  yellow = "\u001b[33m"
+#  blue = "\u001b[34m"
+#  magenta = "\u001b[35m"
+#  cyan = "\u001b[36m"
+#  white = "\u001b[37m"
+
 def customSettings():
     # Using ANSI excape codes to make it easier to see + change text color
     print('\n\033[1;37mWould you like to change the default values? (name of the host and prize)')
@@ -50,19 +60,18 @@ def debugText(carIndex, doors, debugFlag):
     if (int(debugFlag) == 2):
         print('\033[1;34m')
         print('The hidden items behind the doors are:', doors)
-        print(car, 'is hidden behind door number', carIndex + 1)
+        print(car, 'is hidden behind door', carIndex + 1)
         print('\033[1;37m', end='')
     return
 
-# This function
+# This function will prompt the user what kind of run they would like to do
 def chooseRun():
     print('\033[1;32mWhat kind of run would you like to do?')
     chooseInput = input('1) Standard run | 2) Experimental Run\n')
     
-    # For fun function to change around the default host name and prizes
-    customSettings()
-    
     if (int(chooseInput) == 1):
+        # For fun function to change around the default host name and prizes
+        customSettings()
         standardRun()
     elif (int(chooseInput) == 2):
         experimentalRun()
@@ -79,7 +88,7 @@ def standardRun():
     doors = [goat, goat, goat]
 
     # Randomly change one of the doors into having the car and print out the doors
-    carIndex = random.randrange(0, 2)
+    carIndex = random.randrange(0, 3)
     doors[carIndex] = car
 
     # Print out hidden info if debug flag is set to TRUE
@@ -87,7 +96,7 @@ def standardRun():
 
     # Explaining the doors and their names
     unknownDoors = ['Door 1', 'Door 2', 'Door 3']
-    print('\nThere are three doors but you don\'t know which door holds the prize.\n', unknownDoors)
+    print('\nThere are three doors but you don\'t know which door holds the prize.\n\033[1;31m{}'.format(unknownDoors),'\033[1;37m')
     
     # Allow the user to choose what door to pick
     userChoice = input('\nWhat door would you like to choose?\n')
@@ -99,7 +108,7 @@ def standardRun():
     print('\n\033[1;33m' + monty,'opened Door', montyChoice, 'which was revealed to have', doors[montyChoice - 1] + '!\n')
 
     unknownDoors[montyChoice - 1] = doors[montyChoice - 1]
-    print(unknownDoors)
+    print('\033[1;31m{}'.format(unknownDoors), '\033[1;37m\n')
     
     # Find the remaining door that has not been opened
     remainingDoor = findRemainingDoor(montyChoice, int(userChoice))
@@ -134,9 +143,30 @@ def loop(loopFlag):
         loopFlag = 0
     return loopInput
 
-# 
+# This run will be used to run multiple standard runs while collecting the results
 def experimentalRun():
-    
+    wins = 0
+    numberOfTrials = input('\nHow many runs would like to do?\n')
+    for i in range (0, int(numberOfTrials)):
+        # Initialize a list named "doors" with three elements, each having a goat
+        doors = [goat, goat, goat]
+        
+        # Randomly change one of the doors into having the car and print out the doors
+        carIndex = random.randrange(0, 3)
+        doors[carIndex] = car
+        
+        # Assume the user will always choose Door 1
+        userChoice = 1
+        montyChoice = determineMontyChoice(1, carIndex)
+        
+        # Find the remaining door
+        remainingDoor = findRemainingDoor(montyChoice, 1)
+        
+        # Assuming we want to swap all the time
+        if (carIndex + 1 != userChoice):
+            wins += 1
+
+    print('\n\033[1;34mWins:', wins, '\nLosses:', int(numberOfTrials) - wins, '\nWin Rate:', str(round((wins / int(numberOfTrials) * 100), 2)) + '%\n\033[1;37m')
     return
 
 # Main program that will be executed at the beginning
@@ -151,6 +181,7 @@ def main():
         
         # Resetting font color     
         print('\033[1;0m')
+    print('Have a good day!')
     return
     
 # Run program    
